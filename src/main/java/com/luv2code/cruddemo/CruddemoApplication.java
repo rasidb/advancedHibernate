@@ -1,5 +1,8 @@
 package com.luv2code.cruddemo;
 
+import com.luv2code.cruddemo.dao.AppDAO;
+import com.luv2code.cruddemo.entity.Instructor;
+import com.luv2code.cruddemo.entity.InstructorDetail;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,13 +11,39 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class CruddemoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CruddemoApplication.class, args);
-	}
-@Bean
-	public CommandLineRunner commandLineRunner(String[] s){
-		return runner -> {
-			System.out.println("hello world ");
-		};
-}
+    public static void main(String[] args) {
+        SpringApplication.run(CruddemoApplication.class, args);
+    }
+
+    @Bean
+    public CommandLineRunner commandLineRunner(AppDAO appDAO) {
+        return runner -> {
+            findInstructorDetail(appDAO);
+        };
+    }
+
+    private void findInstructorDetail(AppDAO appDAO) {
+        InstructorDetail byId = appDAO.findInstructorDetailById(2);
+        System.out.println(byId.getId());
+        System.out.println(byId.getInstructor());
+        System.out.println(byId.getInstructor().getFirstName());
+    }
+
+    private void deleteId(AppDAO appDAO) {
+        appDAO.deleteById(1);
+    }
+
+    private void findInstructorById(AppDAO appDAO) {
+        Instructor byId = appDAO.findById(1);
+        System.out.println(byId);
+    }
+
+    private void createInstructor(AppDAO appDAO) {
+        Instructor instructor = new Instructor("Rasid", "babamgul", "biseyler@gmail.com");
+        InstructorDetail instructorDetail = new InstructorDetail("youtube", "patates");
+        appDAO.save(instructor);
+        instructor.setInstructorDetail(instructorDetail);
+        appDAO.save(instructor);
+        appDAO.change(2);
+    }
 }

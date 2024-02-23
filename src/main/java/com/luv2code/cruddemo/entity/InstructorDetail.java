@@ -16,6 +16,9 @@ public class InstructorDetail {
     @Column(name = "hobby")
     private String hobby;
 
+    @OneToOne(mappedBy = "instructorDetail") //Instructor classındaki instructorDetail objesini gösterir
+    private Instructor instructor;
+
 
 
     public InstructorDetail(String youtubeChannel, String hobby) {
@@ -25,6 +28,14 @@ public class InstructorDetail {
     }
 
     public InstructorDetail() {
+    }
+
+    public Instructor getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(Instructor instructor) {
+        this.instructor = instructor;
     }
 
     public int getId() {
@@ -54,6 +65,10 @@ public class InstructorDetail {
 
     @Override
     public String toString() {
-        return "InstructorDetail{" + "id=" + id + ", youtubeChannel='" + youtubeChannel + '\'' + ", hobby='" + hobby + '\'' + '}';
+        return "InstructorDetail{" +
+                "id=" + id +
+                ", youtubeChannel='" + youtubeChannel + '\'' +
+                ", hobby='" + hobby + '\'' +
+                '}';
     }
 }

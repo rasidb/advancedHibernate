@@ -19,7 +19,7 @@ public class Instructor {
     @Column(name = "email")
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL) //@OneToOne -> tek yönlü olarak Instructor'dan InstructorDetail'e gider tersi yönde iliski kurulamaz //Cascade.ALL tüm işlemlere izin verir delete, add vb.
     @JoinColumn(name = "instructor_detail_id")
     private InstructorDetail instructorDetail;
 
