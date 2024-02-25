@@ -1,0 +1,9 @@
+fetch types
+    fetch type belirlenmediğinde default olarak bu sekilde ayarlanır
+   @OneToOne(fetch = FetchType.EAGER)
+   @OneToMany(fetch = FetchType.LAZY)
+   @ManyToOne(fetch = FetchType.EAGER)
+   @ManyToMany(fetch = FetchType.LAZY)
+
+FetchType.EAGER-> ana obje kulanıldığında bu objeyi de getirir
+FetchType.LAZY -> ana obje kullanılsa bile bu obje yalnızca çağırılınca getirilir

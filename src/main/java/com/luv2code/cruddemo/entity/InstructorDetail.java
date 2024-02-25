@@ -16,10 +16,8 @@ public class InstructorDetail {
     @Column(name = "hobby")
     private String hobby;
 
-    @OneToOne(mappedBy = "instructorDetail") //Instructor classındaki instructorDetail objesini gösterir
+    @OneToOne(mappedBy = "instructorDetail",cascade = { CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.PERSIST}) //Instructor classındaki instructorDetail objesini gösterir
     private Instructor instructor;
-
-
 
     public InstructorDetail(String youtubeChannel, String hobby) {
 

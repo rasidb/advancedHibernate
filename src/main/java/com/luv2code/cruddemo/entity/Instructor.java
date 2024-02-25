@@ -2,6 +2,9 @@ package com.luv2code.cruddemo.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "Instructor")
 public class Instructor {
@@ -19,14 +22,19 @@ public class Instructor {
     @Column(name = "email")
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL) //@OneToOne -> tek yönlü olarak Instructor'dan InstructorDetail'e gider tersi yönde iliski kurulamaz //Cascade.ALL tüm işlemlere izin verir delete, add vb.
+    @OneToOne(cascade = CascadeType.ALL)
+    //@OneToOne -> tek yönlü olarak Instructor'dan InstructorDetail'e gider tersi yönde iliski kurulamaz //Cascade.ALL tüm işlemlere izin verir delete, add vb.
     @JoinColumn(name = "instructor_detail_id")
     private InstructorDetail instructorDetail;
+
+    //mappedBy="instructor" -> Course sınıfındaki instructor objesi
+    @OneToMany(mappedBy = "instructor", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Course> course;
 
     public Instructor() {
     }
 
-    public Instructor( String firstName, String lastName, String email) {
+    public Instructor(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -71,6 +79,21 @@ public class Instructor {
 
     public void setInstructorDetail(InstructorDetail instructorDetail) {
         this.instructorDetail = instructorDetail;
+    }
+
+    public List<Course> getCourse() {
+        return course;
+    }
+
+    public void setCourse(List<Course> course) {
+        this.course = course;
+    }
+
+    //add convenience method for bi-directional relationship
+    public void add(Course course) {
+        if (this.course == null)
+            this.course = new ArrayList<>();
+        this.course.add(course);
     }
 
     @Override
