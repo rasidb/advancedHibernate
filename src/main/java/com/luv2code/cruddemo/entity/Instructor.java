@@ -28,7 +28,10 @@ public class Instructor {
     private InstructorDetail instructorDetail;
 
     //mappedBy="instructor" -> Course sınıfındaki instructor objesi
-    @OneToMany(mappedBy = "instructor", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "instructor",
+             cascade = { CascadeType.DETACH, CascadeType.MERGE,
+                        CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Course> course;
 
     public Instructor() {
@@ -94,6 +97,7 @@ public class Instructor {
         if (this.course == null)
             this.course = new ArrayList<>();
         this.course.add(course);
+        course.setInstructor(this);
     }
 
     @Override

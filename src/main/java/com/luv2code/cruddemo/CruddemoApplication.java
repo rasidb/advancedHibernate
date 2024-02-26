@@ -9,8 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
@@ -23,19 +21,38 @@ public class CruddemoApplication {
     @Bean
     public CommandLineRunner commandLineRunner(AppDAO appDAO) {
         return runner -> {
-           createInstructorWithCourses(appDAO);
+
+           findInstructorWithCoursesJoinFetch(appDAO);
         };
     }
 
+    private void findInstructorWithCoursesJoinFetch(AppDAO appDAO) {
+        Instructor instructorByIdJoinFetch = appDAO.findInstructorByIdJoinFetch(1);
+        System.out.println(instructorByIdJoinFetch);
+        System.out.println(instructorByIdJoinFetch.getCourse());
+    }
+
+    private void findCoursesForInstructor(AppDAO appDAO) {
+        System.out.println(appDAO.findCoursesByInstructorId(1));
+    }
+
+    private void findInstructorWithCourses(AppDAO appDAO) {
+        Instructor byId = appDAO.findInstructorById(1);
+        System.out.println(byId);
+        System.out.println(byId.getCourse());
+    }
+
     private void createInstructorWithCourses(AppDAO appDAO) {
-        Instructor instructor = new Instructor("Fatih", "kizartmaso", "biseyler@gmail.com");
+        Instructor instructor = new Instructor("patates", "kizartmasi", "biseyler@gmail.com");
         InstructorDetail instructorDetail = new InstructorDetail("youtube", "rawr");
-        Course course =new Course("ilk kurs");
-        Course course2 =new Course("ikinci");
+        Course course =new Course("5");
+        Course course2 =new Course("6");
+        instructor.setInstructorDetail(instructorDetail);
         instructor.add(course);
         instructor.add(course2);
-        instructor.setInstructorDetail(instructorDetail);
+
         appDAO.save(instructor);
+        System.out.println(instructor.getCourse());
     }
 
     private void findInstructorDetail(AppDAO appDAO) {
@@ -50,7 +67,7 @@ public class CruddemoApplication {
     }
 
     private void findInstructorById(AppDAO appDAO) {
-        Instructor byId = appDAO.findById(1);
+        Instructor byId = appDAO.findInstructorById(1);
         System.out.println(byId);
     }
 
