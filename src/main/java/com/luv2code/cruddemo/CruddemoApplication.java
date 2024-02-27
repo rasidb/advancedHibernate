@@ -21,9 +21,29 @@ public class CruddemoApplication {
     @Bean
     public CommandLineRunner commandLineRunner(AppDAO appDAO) {
         return runner -> {
-
-           findInstructorWithCoursesJoinFetch(appDAO);
+      deleteCourseById(appDAO);
         };
+    }
+
+    private void deleteCourseById(AppDAO appDAO) {
+        appDAO.deleteCourseById(11);
+    }
+
+    private void deleteInstructor(AppDAO appDAO) {
+        appDAO.deleteInstructorById(1);
+    }
+
+    private void updateCourse(AppDAO appDAO) {
+        Course course = appDAO.findCourseById(10);
+        course.setTitle("patatesKizartmasi");
+        appDAO.update(course);
+    }
+
+    private void updateInstructor(AppDAO appDAO) {
+        int id = 1;
+        Instructor instructor = appDAO.findInstructorById(id);
+        instructor.setLastName("test");
+        appDAO.update(instructor);
     }
 
     private void findInstructorWithCoursesJoinFetch(AppDAO appDAO) {
@@ -45,8 +65,8 @@ public class CruddemoApplication {
     private void createInstructorWithCourses(AppDAO appDAO) {
         Instructor instructor = new Instructor("patates", "kizartmasi", "biseyler@gmail.com");
         InstructorDetail instructorDetail = new InstructorDetail("youtube", "rawr");
-        Course course =new Course("5");
-        Course course2 =new Course("6");
+        Course course = new Course("5");
+        Course course2 = new Course("6");
         instructor.setInstructorDetail(instructorDetail);
         instructor.add(course);
         instructor.add(course2);
@@ -63,7 +83,7 @@ public class CruddemoApplication {
     }
 
     private void deleteId(AppDAO appDAO) {
-        appDAO.deleteById(1);
+        appDAO.deleteInstructorById(1);
     }
 
     private void findInstructorById(AppDAO appDAO) {
