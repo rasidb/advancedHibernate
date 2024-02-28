@@ -1,9 +1,7 @@
 package com.luv2code.cruddemo;
 
 import com.luv2code.cruddemo.dao.AppDAO;
-import com.luv2code.cruddemo.entity.Course;
-import com.luv2code.cruddemo.entity.Instructor;
-import com.luv2code.cruddemo.entity.InstructorDetail;
+import com.luv2code.cruddemo.entity.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,8 +19,39 @@ public class CruddemoApplication {
     @Bean
     public CommandLineRunner commandLineRunner(AppDAO appDAO) {
         return runner -> {
-      deleteCourseById(appDAO);
+            findCoursesForStudent(appDAO);
         };
+    }
+
+    private void findCoursesForStudent(AppDAO appDAO) {
+        Course courses = appDAO.findCoursesForStudentById(10);
+        System.out.println(courses.getStudents());
+    }
+
+    private void createCourseAndStudents(AppDAO appDAO) {
+        Course course = new Course("patates nasil soyulur");
+        Student student1 = new Student("rasid", "patatesci", "aptates@gmail.com");
+        Student student2 = new Student("kizartma", "salata", "aptates@gmail.com");
+        course.add(student1);
+        course.add(student2);
+        appDAO.save(course);
+    }
+
+    private void deleteCourseAndReviews(AppDAO appDAO) {
+        appDAO.deleteCourseById(10);
+    }
+
+    private void retrieveCourseAndReviews(AppDAO appDAO) {
+        Course c = appDAO.findCourseAndReviewsByCourseId(10);
+        System.out.println(c);
+        System.out.println(c.getReview());
+    }
+
+    private void createCourseAndReviews(AppDAO appDAO) {
+        Course course = new Course("createCourse");
+        course.add(new Review("yorum"));
+        course.add(new Review("basima gelecek seylerden google play store sorumludur"));
+        appDAO.save(course);
     }
 
     private void deleteCourseById(AppDAO appDAO) {
@@ -50,6 +79,7 @@ public class CruddemoApplication {
         Instructor instructorByIdJoinFetch = appDAO.findInstructorByIdJoinFetch(1);
         System.out.println(instructorByIdJoinFetch);
         System.out.println(instructorByIdJoinFetch.getCourse());
+        System.out.println(instructorByIdJoinFetch.getCourse().get(0).getReview());
     }
 
     private void findCoursesForInstructor(AppDAO appDAO) {
@@ -65,12 +95,16 @@ public class CruddemoApplication {
     private void createInstructorWithCourses(AppDAO appDAO) {
         Instructor instructor = new Instructor("patates", "kizartmasi", "biseyler@gmail.com");
         InstructorDetail instructorDetail = new InstructorDetail("youtube", "rawr");
+        instructor.setInstructorDetail(instructorDetail);
+
         Course course = new Course("5");
         Course course2 = new Course("6");
-        instructor.setInstructorDetail(instructorDetail);
+
+        course.add(new Review("yorum1"));
+        course.add(new Review("yorum2"));
+
         instructor.add(course);
         instructor.add(course2);
-
         appDAO.save(instructor);
         System.out.println(instructor.getCourse());
     }
@@ -88,6 +122,7 @@ public class CruddemoApplication {
 
     private void findInstructorById(AppDAO appDAO) {
         Instructor byId = appDAO.findInstructorById(1);
+        System.out.println(byId.getCourse().get(0).getReview());
         System.out.println(byId);
     }
 
