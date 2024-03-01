@@ -1,7 +1,5 @@
 package com.luv2code.cruddemo.entity;
-
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "review")
 public class Review {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
